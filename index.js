@@ -4,6 +4,7 @@ import userRouter from "./routes/usersRoute.js";
 import mongoose from "mongoose";
 import galleryItemRouter from "./routes/galleryItemRoute.js";
 import jwt from "jsonwebtoken";
+import categoryRouter from "./routes/categoryRoute.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -39,6 +40,7 @@ mongoose
 
 app.use("/api/users/", userRouter);
 app.use("/api/gallery/", galleryItemRouter);
+app.use("/api/category/", categoryRouter);
 
 app.listen(5000, (req, res) => {
   console.log("Sever is runing on on port 5000");
