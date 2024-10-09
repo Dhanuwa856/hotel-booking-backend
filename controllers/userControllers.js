@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 
 // Get all users
 export async function getUsers(req, res) {
@@ -15,15 +15,13 @@ export async function getUsers(req, res) {
 
 // Create a new user
 export async function postUsers(req, res) {
-  console.log("This is a POST request");
   const user = req.body;
   const password = req.body.password;
 
   // Hash the user's password
-  const passwordHash = bcrypt.hashSync(password, 10);
-  user.password = passwordHash;
-
   try {
+    const passwordHash = await argon2.hash(password);
+    user.password = passwordHash;
     const newUser = await new User(user).save();
     res.status(201).json(newUser);
   } catch (err) {
@@ -120,8 +118,8 @@ export async function loginUser(req, res) {
       });
     }
 
-    // Compare the provided password with the stored hashed password
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Verify the password with Argon2
+    const isMatch = await argon2.verify(user.password, password);
 
     if (!isMatch) {
       return res.status(400).json({
