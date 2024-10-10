@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const categorySchema = mongoose.Schema({
+const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -10,13 +10,9 @@ const categorySchema = mongoose.Schema({
     required: true,
   },
   amenities: {
-    type: [String],
+    type: [String], // Corrected: amenities should be an array of strings
     required: false,
     default: [],
-  },
-  price: {
-    type: String,
-    required: true,
   },
   createdAt: {
     type: Date,
@@ -24,6 +20,6 @@ const categorySchema = mongoose.Schema({
   },
 });
 
-const Category = mongoose.model("category01", categorySchema);
+const Category = mongoose.model("category01", categorySchema); // Model name should match correctly
 
 export default Category;
