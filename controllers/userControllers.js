@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import argon2 from "argon2";
+import dotenv from "dotenv";
 
 // Get all users
 export async function getUsers(req, res) {
@@ -137,7 +138,7 @@ export async function loginUser(req, res) {
     };
 
     // Generate JWT token
-    const token = jwt.sign(payload, "secretKey", { expiresIn: "1h" });
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "1h" });
 
     // Respond with user data and token
     res.json({
